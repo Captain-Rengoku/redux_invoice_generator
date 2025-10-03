@@ -1,7 +1,20 @@
+import { format, parseISO } from "date-fns";
 import { ChevronRight } from "lucide-react";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const InvoiceList = () => {
+
+  const { invoices } = useSelector((state) => state.invoices)
+
+  const formatDate = (date) => {
+    try {
+      return format(parseISO(date), "dd MM yyyy");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div

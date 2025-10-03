@@ -16,7 +16,7 @@ const AppContent = () => {
       <div className="max-w-5xl mx-auto p-4 sm:py-12">
         <Header onNewInvoice={handleNewInvoice} />
         <hr className="my-8 text-indigo-950 rounded-full" />
-        {/* <InvoiceList />*/}
+        <InvoiceList />
         {isFormOpen && <InvoiceForm />}
       </div>
     </div>
