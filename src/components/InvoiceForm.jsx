@@ -1,13 +1,19 @@
 import { Plus, Trash2, X } from "lucide-react";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addInvoice, toggleForm } from "../features/invoice/invoiceSlice";
+import { addInvoice, toggleForm, updateInvoice } from "../features/invoice/invoiceSlice";
 import { addDays, format } from "date-fns";
 
-const InvoiceForm = () => {
+const InvoiceForm = ({invoice}) => {
   const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState(() => ({
+  const [formData, setFormData] = useState(() => {
+
+    if(invoice){
+      return {...invoice};
+    }
+    
+    return {
     id: `INV${Math.floor(Math.random() * 10000)}`,
     status: "pending",
     billFrom: {
@@ -30,14 +36,21 @@ const InvoiceForm = () => {
     invoiceDate: format(new Date(), "yyyy-MM-dd"),
     dueDate: format(addDays(new Date(), 30), "yyyy-MM-dd"),
     amount: 0,
-  }));
+  }});
+
+  useEffect(() => {
+    if(invoice){
+      setFormData(invoice);
+    }
+  },[invoice]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log('working')
-    dispatch(addInvoice(formData));
-    console.log(formData);
-    // dispatch(toggleForm());
+    if(invoice){
+      dispatch(updateInvoice(formData));
+    } else {
+      dispatch(addInvoice(formData));
+    }
   }
 
   const addItem = () => {
@@ -382,7 +395,7 @@ const InvoiceForm = () => {
               className="flex items-center justify-center gap-x-2 font-bold text-slate-200 hover:text-slate-400
             bg-indigo-700 hover:bg-indigo-800 px-3 py-2 rounded-lg cursor-pointer"
             >
-              Create Invoice
+              {invoice ? "save Changes" : "Create Invoice"}
             </button>
           </div>
         </form>

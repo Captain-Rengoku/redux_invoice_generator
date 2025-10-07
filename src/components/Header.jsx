@@ -1,11 +1,13 @@
 import React from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Filter, Plus } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter } from "../features/invoice/invoiceSlice";
 
 const status = ["all", "paid", "pending", "draft"];
 
 const Header = ({ onNewInvoice }) => {
+  const dispatch = useDispatch();
   const { invoices, filter } = useSelector((state) => state.invoices);
 
   return (
@@ -31,7 +33,7 @@ const Header = ({ onNewInvoice }) => {
           </MenuButton>
           <MenuItems
             className={
-              "absolute top-16 right-0 w-full min-w-36 bg-slate-800 rounded-lg shadow-lg p-2 z-10"
+              "absolute top-16 right-0 w-full min-w-36 bg-slate-800 rounded-lg shadow-lg p-2 z-10 space-y-1"
             }
           >
             {status?.map((stat) => (
@@ -41,6 +43,7 @@ const Header = ({ onNewInvoice }) => {
                     className={`w-full text-left mx-auto p-2 cursor-pointer rounded-lg capitalize
                       ${active && 'bg-slate-950' } ${filter === stat && `bg-slate-900 text-indigo-300`}
                     `}
+                    onClick={() => dispatch(setFilter(stat))}
                   >
                     {stat}
                   </button>

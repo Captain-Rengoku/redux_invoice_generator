@@ -13,7 +13,7 @@ const loadState = () => {
             };
         }
         return JSON.parse(serializedState);
-    } catch (error) {
+    } catch {
         return {
             invoices: [],
             filter: 'all',
@@ -55,19 +55,79 @@ const invoiceSlice = createSlice({
                     format(addDays(new Date(), 30), 'yyyy-MM-dd')
             }
             state.invoices.push(newInvoice);
-            saveState(state);
             state.isFormOpen = false;
+            saveState(state);
         },
+
+        // filter for invoices
+        setFilter: (state, action) => {
+            state.filter = action.payload;
+        },
+
         // toggle action
         toggleForm: (state) => {
             state.isFormOpen = !state.isFormOpen;
             if (!state.isFormOpen) {
                 state.selectedInvoice = null;
+            };
+            saveState(state);
+        },
+
+        // select invoice
+        setSelectedInvoice: (state, action) => {
+            state.selectedInvoice = action.payload;
+            state.isFormOpen = false;
+        },
+
+        // mark as paid
+        markAsPaid: (state, action) => {
+            const invoice = state.invoices.find((inv) => inv.id === action.payload);
+            if (invoice) {
+                invoice.status = invoice.status === "paid" ? "pending" : "paid";
+                state.selectedInvoice = null;
+                state.isFormOpen = false;
+                saveState(state);
             }
+        },
+
+        // delete the invoice
+        deleteInvoice: (state, action) => {
+            state.invoices = state.invoices.filter((inv) => inv.id !== action.payload);
+            state.selectedInvoice = null;
+            saveState(state);
+        },
+
+        // update the invoice
+        updateInvoice: (state, action) => {
+            const updateInvoice = {
+                ...action.payload,
+                amount: calculateAmount(action.payload.items),
+            };
+            const index = state.invoices.findIndex((inv) => inv.id === updateInvoice.id);
+            if (index !== -1) {
+                state.invoices[index] = updateInvoice;
+            }
+            state.selectedInvoice = null;
+            state.isFormOpen = false;
+            saveState(state);
+        },
+
+        // close the invoice detail
+        closeInvoice: (state) => {
+            state.selectedInvoice = null;
         }
     },
 })
 
-export const { toggleForm, addInvoice } = invoiceSlice.actions;
+export const {
+    toggleForm,
+    addInvoice,
+    setFilter,
+    setSelectedInvoice,
+    markAsPaid,
+    deleteInvoice,
+    updateInvoice,
+    closeInvoice
+} = invoiceSlice.actions;
 
 export default invoiceSlice.reducer;
