@@ -16,7 +16,7 @@ const InvoiceList = () => {
   if (filteredInvoices.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-xl text-slate-400"> No Invoice Found</p>
+        <p className="text-lg text-slate-400">🧾 No invoices found — create a new one to get started!</p>
       </div>
     );
   }
@@ -34,11 +34,11 @@ const InvoiceList = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 min-h-[80svh] bg-slate-900 p-4 rounded-lg">
       {filteredInvoices.map((invoice) => (
         <div
-          className="bg-slate-900 rounded-lg p-4 sm:p-6 flex sm:items-center justify-between 
-        hover:bg-slate-800 transition-colors duration-200 cursor-pointer"
+          className="bg-slate-800 rounded-lg p-4 sm:px-6 flex sm:items-center justify-between 
+        hover:bg-slate-800/80 transition-colors duration-200 cursor-pointer"
           key={invoice.id}
           onClick={() => handleInvoiceClick(invoice)}
         >

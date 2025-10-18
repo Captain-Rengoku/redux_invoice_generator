@@ -11,20 +11,21 @@ const Header = ({ onNewInvoice }) => {
   const { invoices, filter } = useSelector((state) => state.invoices);
 
   return (
-    <div className="flex items-start justify-between">
+    <div className="flex items-start justify-between bg-slate-900 p-4 mb-4 rounded-lg">
       <div>
         <h1 className="text-3xl font-bold mb-2">Invoices</h1>
-        <p className="text-slate-400">
+        <p className="text-slate-400 text-lg">
           {invoices.length === 0
             ? `No Invoice`
-            : `There are ${invoices.length} Total Invoices`}
+            : <>There are total <span className="text-orange-500">{invoices.length}</span> invoices</>
+          }
         </p>
       </div>
-      <div className="flex items-center gap-x-4">
+      <div className="flex items-center gap-x-2 sm:gap-x-4">
         <Menu as="div" className="relative">
           <MenuButton
-            className="flex items-center sm:gap-x-2 font-semibold cursor-pointer rounded-lg 
-                bg-slate-800 hover:bg-slate-900 p-2 sm:pr-4 text-slate-200 hover:text-slate-400"
+            className="flex items-center font-semibold cursor-pointer rounded-lg 
+                bg-slate-700 hover:bg-slate-700/90 p-2 sm:pr-4 text-slate-200 hover:text-slate-400"
           >
             <div className="p-2">
               <Filter size={20} />
@@ -57,7 +58,7 @@ const Header = ({ onNewInvoice }) => {
         p-2 sm:pr-4 cursor-pointer text-slate-200 hover:text-slate-400"
         >
           <div
-            className="flex justify-center items-center sm:gap-x-2"
+            className="flex justify-center items-center"
             onClick={onNewInvoice}
           >
             <div className="p-2">
